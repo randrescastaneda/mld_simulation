@@ -1,5 +1,6 @@
 library(data.table)
 library(ggplot2)
+library(collapse)
 
 #--------- read subfunctions ---------
 source(here::here("R/utils.R"))
