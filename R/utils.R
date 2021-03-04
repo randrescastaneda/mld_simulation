@@ -42,8 +42,8 @@ new_mld <- function(welfare, weight,  sh, sc, rp) {
 }
 
 fmld <- function (welfare, weight) {
-  welfare <- welfare[welfare <= 0]
-  welfare <- weight[welfare <= 0]
+  weight  <- weight[welfare > 0]
+  welfare <- welfare[welfare > 0]
 
   mean_welfare <- collapse::fmean(x = welfare, w = weight)
   deviation <- log(mean_welfare/welfare)

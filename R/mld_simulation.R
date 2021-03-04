@@ -26,7 +26,7 @@ wf_lnor <- (wf_lnor*fmean(x = wf_unif, w = weight)) / fmean(x = wf_lnor, w = wei
 #--------- parameters ---------
 sh <- c(1:10, 15, 20, 25, 30, 40, 50)/100  # shares of zeros
 sc <- c(.5, 1, 2, 5, 10, 100, 1e3, 1e4, 1e5) # Scales
-rp <- c("ignore", "1", "min", "shr") # replaces
+rp <- c("1", "min", "shr") # replaces
 
 
 params <- tidyr::expand_grid(sh, sc, rp)
@@ -46,7 +46,6 @@ mld_lnor <- purrr::pmap_df(params,
                            weight  = weight)
 mld_lnor$dist <-  "lnor"
 
-pushover("MLDs ready")
 
 dt <- rbindlist(list(mld_unif, mld_lnor),
                 use.names = TRUE,
@@ -59,7 +58,7 @@ dt[,
    )
    ]
 
-gr <- ggplot(dt[share <= .2],
+gr <- ggplot(dt[share <= .3],
        aes(x = sh,
            y = sc,
            fill = mld)) +
@@ -68,3 +67,14 @@ gr <- ggplot(dt[share <= .2],
 
 plotly::ggplotly(gr)
 
+grf <- ggplot(dt[share <= .3],
+       aes(x = sh,
+           y = sc,
+           fill = mld)) +
+  geom_tile() +
+  facet_grid(dist~replace, scales = "free")
+
+plotly::ggplotly(grf)
+
+beepr::beep(4)
+# pushover("MLDs ready")
